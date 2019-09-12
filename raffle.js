@@ -10,7 +10,7 @@ const client = new elasticSearch.Client({
     log: 'trace'
 });
 
-let index = process .env.INDEX;
+let index = process.env.INDEX;
 let type = process.env.TYPE;
 
 //checking the conncetion
@@ -30,30 +30,29 @@ let rawdata = fs.readFileSync('data.json');
 console.log(rawdata)
 let obj = JSON.parse(rawdata);
 
-const url = `${host}/${index}/${type}`
-
 //loop through and save to ES
 obj.forEach(async (element) => {
+    const url = `${host}/${index}/${type}/${element.msisdn}`
+
     const options = {
         uri: url,
         method: 'POST',
         body: element,
         json: true
     };
-    arr = [];
 
     try {
         const response2 = await rp(options);
         console.log('RESPONSE', response2)
     } catch (e) {
         fs.appendFile('output.txt', e, err => {
-            if(err){
+            if (err) {
                 console.log(err)
             }
         })
     }
 
 });
-    
+
 
 
