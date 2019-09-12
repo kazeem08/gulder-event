@@ -1,16 +1,17 @@
 const fs = require('fs');
 const rp = require('request-promise');
 const elasticSearch = require('elasticsearch');
+require('dotenv/config');
 
 //create elasticsearch client
-let host = 'http://localhost:9200'
+let host = process.env.HOST;
 const client = new elasticSearch.Client({
     host,
     log: 'trace'
 });
 
-let index = 'audience:msisdn';
-let type = 'gulder';
+let index = process .env.INDEX;
+let type = process.env.TYPE;
 
 //checking the conncetion
 client.ping({
@@ -23,7 +24,6 @@ client.ping({
         console.log('All is well');
     }
 });
-
 
 //read the data
 let rawdata = fs.readFileSync('data.json');
